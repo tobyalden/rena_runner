@@ -38,6 +38,7 @@ class Main extends Engine
             defineGamepadInputs(newGamepad);
         });
 
+        HXP.volume = 0;
         HXP.scene = new GameScene();
     }
 

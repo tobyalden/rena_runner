@@ -129,6 +129,12 @@ class Player extends MiniEntity
             }
             collisions();
         }
+        if(x < HXP.scene.camera.x) {
+            moveTo(HXP.scene.camera.x, y);
+        }
+        if(x + width > HXP.scene.camera.x + GameScene.GAME_WIDTH) {
+            moveTo(HXP.scene.camera.x + GameScene.GAME_WIDTH - width, y);
+        }
         super.update();
     }
 
@@ -183,6 +189,9 @@ class Player extends MiniEntity
             else {
                 die();
             }
+        }
+        if(collide("walls", x, y) != null) {
+            die();
         }
     }
 

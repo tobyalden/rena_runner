@@ -113,7 +113,7 @@ class GameScene extends Scene
     }
 
     public function onDeath() {
-        Boss.sfx["klaxon"].stop();
+        //Boss.sfx["klaxon"].stop();
         Data.load(SAVE_FILE_NAME);
         GameScene.deathCount++;
         HXP.alarm(1, function() {
