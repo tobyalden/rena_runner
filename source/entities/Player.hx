@@ -30,8 +30,12 @@ class Player extends MiniEntity
     public static inline var JUMP_CANCEL_POWER = 20;
     public static inline var MAX_FALL_SPEED = 370;
 
+    public static inline var AUTORUN_SPEED = MAX_RUN_SPEED / 2;
+
     public static inline var SHOT_SPEED = 500;
-    public static inline var SHOT_COOLDOWN = 1 / 60 * 5;
+    public static inline var SHOT_COOLDOWN = 0.2;
+    public static inline var MAX_ONSCREEN_BULLETS = 2;
+
     public static inline var COYOTE_TIME = 1 / 60 * 5;
 
     public static var sfx:Map<String, Sfx> = null;
@@ -84,7 +88,8 @@ class Player extends MiniEntity
         addTween(shotCooldown);
         isCrouching = false;
         airTime = 0;
-        inventory = [ITEM_GUN, ITEM_STORED_JUMP, ITEM_HIGH_JUMP];
+        inventory = [ITEM_GUN, ITEM_HIGH_JUMP];
+        //inventory = [ITEM_GUN];
         //inventory = [];
         if(sfx == null) {
             sfx = [
@@ -98,7 +103,6 @@ class Player extends MiniEntity
             ];
         }
         jumpedOffLauncher = false;
-        sprite.flipX = Data.read("flipX", false);
     }
 
     public function hasItem(item:Int) {
@@ -129,18 +133,17 @@ class Player extends MiniEntity
     }
 
     private function shooting() {
-        if(Input.check("action") && !shotCooldown.active) {
-            var spreadAmount = Math.PI / 16;
-            if(isCrouching) {
-                spreadAmount = 0;
-            }
+        //if(HXP.scene.typeCount("playerbullet") >= MAX_ONSCREEN_BULLETS) {
+            //return;
+        //}
+        //if(Input.pressed("action") && !shotCooldown.active) {
+        if(Input.pressed("action")) {
             var bullet = new Bullet(
                 centerX, centerY + (isCrouching ? 5 : 0),
                 {
-                    width: 8,
-                    height: 3,
-                    angle: (sprite.flipX ? -1 : 1) * Math.PI / 2
-                        + (Math.random() - 0.5) * spreadAmount,
+                    width: 10,
+                    height: 5,
+                    angle: (sprite.flipX ? -1 : 1) * Math.PI / 2,
                     speed: SHOT_SPEED,
                     shotByPlayer: true,
                     collidesWithWalls: true
@@ -149,14 +152,7 @@ class Player extends MiniEntity
             scene.add(bullet);
             //sfx['playershot${HXP.choose(1, 2, 3)}'].play(HXP.choose(0.5, 0.7, 0.6));
             shotCooldown.start();
-        }
-        if(Input.check("action")) {
-            if(!sfx["shoot"].playing) {
-                sfx["shoot"].loop();
-            }
-        }
-        else {
-            sfx["shoot"].stop();
+            sfx["shoot"].play();
         }
     }
 
@@ -239,6 +235,7 @@ class Player extends MiniEntity
             );
         }
         var maxSpeed = isOnGround() ? MAX_RUN_SPEED : MAX_AIR_SPEED;
+        velocity.x += AUTORUN_SPEED;
         velocity.x = MathUtil.clamp(velocity.x, -maxSpeed, maxSpeed);
 
         if(isOnGround()) {
@@ -299,14 +296,14 @@ class Player extends MiniEntity
     }
 
     private function animation() {
-        if(!Input.check("action") || isCrouching || !hasItem(ITEM_GUN)) {
-            if(Input.check("left")) {
-                sprite.flipX = true;
-            }
-            else if(Input.check("right")) {
-                sprite.flipX = false;
-            }
-        }
+        //if(!Input.check("action") || isCrouching || !hasItem(ITEM_GUN)) {
+            //if(Input.check("left")) {
+                //sprite.flipX = true;
+            //}
+            //else if(Input.check("right")) {
+                //sprite.flipX = false;
+            //}
+        //}
 
         var animationSuffix = hasItem(ITEM_GUN) ? "_gun" : "";
 

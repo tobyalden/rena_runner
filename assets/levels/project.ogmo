@@ -1,6 +1,6 @@
 {
   "name": "New Project",
-  "ogmoVersion": "3.3.0",
+  "ogmoVersion": "3.4.0",
   "levelPaths": ["."],
   "backgroundColor": "#282c34ff",
   "gridColor": "#3c4049cc",
@@ -8,7 +8,7 @@
   "directoryDepth": 5,
   "layerGridDefaultSize": {"x": 10, "y": 10},
   "levelDefaultSize": {"x": 320, "y": 240},
-  "levelMinSize": {"x": 320, "y": 180},
+  "levelMinSize": {"x": 320, "y": 360},
   "levelMaxSize": {"x": 4096, "y": 4096},
   "levelValues": [],
   "defaultExportMode": ".json",
@@ -142,7 +142,7 @@
       "nodeGhost": true,
       "tags": [],
       "values": [
-        {"name": "bossNames", "definition": "String", "defaults": "", "maxLength": 0, "trimWhitespace": true}
+        {"name": "bossNames", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true}
       ]
     },
     {
@@ -368,7 +368,7 @@
       "nodeGhost": true,
       "tags": [],
       "values": [
-        {"name": "text", "definition": "Text", "defaults": ""}
+        {"name": "text", "definition": "Text", "display": 0, "defaults": ""}
       ]
     },
     {
@@ -473,6 +473,42 @@
       "canFlipY": false,
       "canSetColor": false,
       "hasNodes": true,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": []
+    },
+    {
+      "exportID": "54108473",
+      "name": "optionalSolid",
+      "limit": -1,
+      "size": {"x": 10, "y": 10},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#ff0000e2",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 16, "y": 16},
+      "resizeableX": true,
+      "resizeableY": true,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
       "nodeLimit": 0,
       "nodeDisplay": 0,
       "nodeGhost": true,

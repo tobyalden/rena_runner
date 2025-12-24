@@ -14,10 +14,12 @@ import openfl.Assets;
 
 class GameScene extends Scene
 {
-    public static inline var SAVE_FILE_NAME = "saveme";
-    public static inline var GAME_WIDTH = 320;
-    public static inline var GAME_HEIGHT = 180;
+    public static inline var SAVE_FILE_NAME = "runner";
+    public static inline var GAME_WIDTH = 640;
+    public static inline var GAME_HEIGHT = 360;
     public static inline var NUMBER_OF_CHUNK_TYPES = 2;
+
+    public static inline var SCROLL_SPEED = Player.AUTORUN_SPEED;
 
     public static var totalTime:Float = 0;
     public static var deathCount:Float = 0;
@@ -44,6 +46,7 @@ class GameScene extends Scene
         Data.write("deathCount", deathCount);
         Data.write("defeatedBossNames", defeatedBossNames.join(','));
         Data.save(SAVE_FILE_NAME);
+        camera.x = player.centerX - GAME_WIDTH / 2;
     }
 
     override public function begin() {
@@ -155,11 +158,13 @@ class GameScene extends Scene
             trace(activeBosses);
         }
         super.update();
-        camera.setTo(
-            Math.floor(player.centerX / GAME_WIDTH) * GAME_WIDTH,
-            Math.floor(player.bottom / GAME_HEIGHT) * GAME_HEIGHT,
-            0, 0
-        );
+        //camera.x = player.centerX - GAME_WIDTH / 2;
+        camera.x += SCROLL_SPEED * HXP.elapsed;
+        //camera.setTo(
+            //Math.floor(player.centerX / GAME_WIDTH) * GAME_WIDTH,
+            //Math.floor(player.bottom / GAME_HEIGHT) * GAME_HEIGHT,
+            //0, 0
+        //);
     }
 
     private function getTotalChunkWidth() {

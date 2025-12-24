@@ -50,6 +50,19 @@ class Level extends Entity
                     if(entity.name == "player") {
                         entities.push(new Player(entity.x - 3, entity.y - 4));
                     }
+                    else if(entity.name == "optionalSolid") {
+                        if(Random.random < 0.5) {
+                            var tileStartX = Std.int(entity.x / TILE_SIZE);
+                            var tileStartY = Std.int(entity.y / TILE_SIZE);
+                            var tileWidth = Std.int(entity.width / TILE_SIZE);
+                            var tileHeight = Std.int(entity.height / TILE_SIZE);
+                            for(tileX in tileStartX...(tileStartX + tileWidth)) {
+                                for(tileY in tileStartY...(tileStartY + tileHeight)) {
+                                    walls.setTile(tileX, tileY, true);
+                                }
+                            }
+                        }
+                    }
                     else if(entity.name == "checkpoint") {
                         entities.push(new Checkpoint(entity.x - 3, entity.y - 12));
                     }
