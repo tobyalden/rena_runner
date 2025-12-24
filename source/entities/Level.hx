@@ -7,9 +7,14 @@ import haxepunk.masks.*;
 import haxepunk.math.*;
 import openfl.Assets;
 
+typedef Cell = {
+    var tileX:Int;
+    var tileY:Int;
+}
+
 class Level extends Entity
 {
-    public static inline var TILE_SIZE = 10;
+    public static inline var TILE_SIZE = 20;
 
     public var walls(default, null):Grid;
     private var tiles:Tilemap;
@@ -19,6 +24,7 @@ class Level extends Entity
         super(0, 0);
         type = "walls";
         loadLevel(levelName);
+        addEnemies();
         updateGraphic();
         mask = walls;
     }
@@ -63,26 +69,11 @@ class Level extends Entity
                             }
                         }
                     }
-                    else if(entity.name == "checkpoint") {
-                        entities.push(new Checkpoint(entity.x - 3, entity.y - 12));
-                    }
-                    else if(entity.name == "lock") {
-                        entities.push(new Lock(entity.x, entity.y, entity.width, entity.height));
-                    }
                     else if(entity.name == "bossTrigger") {
                         entities.push(new BossTrigger(
                             entity.x, entity.y, entity.width, entity.height,
                             entity.values.bossNames
                         ));
-                    }
-                    else if(entity.name == "testBoss") {
-                        entities.push(new TestBoss(entity.x, entity.y));
-                    }
-                    else if(entity.name == "testBossTwo") {
-                        entities.push(new TestBossTwo(entity.x, entity.y));
-                    }
-                    else if(entity.name == "testBossThree") {
-                        entities.push(new TestBossThree(entity.x, entity.y, getPathNodes(entity, entity.nodes)));
                     }
                     else if(entity.name == "spikeCeiling") {
                         entities.push(new Spike(entity.x, entity.y, Spike.CEILING, entity.width));
@@ -112,6 +103,26 @@ class Level extends Entity
         }
         pathNodes.push(new Vector2(entity.x, entity.y));
         return pathNodes;
+    }
+
+    private function addEnemies() {
+        var enemySpawns:Array<Cell> = [];
+        for(tileX in 0...walls.columns) {
+            for(tileY in 0...walls.rows) {
+                if(
+                    !walls.getTile(tileX, tileY)
+                    && walls.getTile(tileX, tileY - 1)
+                ) {
+                    enemySpawns.push({tileX: tileX, tileY: tileY});
+                }
+            }
+        }
+        for(enemySpawn in enemySpawns) {
+            if(Random.random < 0.2) {
+                var enemy = new Bat(enemySpawn.tileX * TILE_SIZE, enemySpawn.tileY * TILE_SIZE);
+            entities.push(enemy);
+            }
+        }
     }
 
     public function updateGraphic() {

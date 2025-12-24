@@ -5,6 +5,7 @@ import haxepunk.graphics.*;
 import haxepunk.input.*;
 import haxepunk.masks.*;
 import haxepunk.math.*;
+import scenes.*;
 
 class MiniEntity extends Entity
 {
@@ -30,6 +31,14 @@ class MiniEntity extends Entity
 
     private function isOnLeftWall() {
         return collide("walls", x - 1, y) != null;
+    }
+
+    private function getScene() {
+        return cast(HXP.scene, GameScene);
+    }
+
+    private function getPlayer() {
+        return getScene().player;
     }
 
     public function getAngleTowardsPlayer() {

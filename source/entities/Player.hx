@@ -112,15 +112,7 @@ class Player extends MiniEntity
     override public function update() {
         if(!isDead) {
             if(canMove) {
-                if(Input.check("up") && Input.pressed("jump")) {
-                    velocity.y = hasItem(ITEM_HIGH_JUMP) ? -HIGH_JUMP_POWER : -JUMP_POWER;
-                    while(collide("walls", x, y) != null) {
-                        y += 1;
-                    }
-                }
-                if(hasItem(ITEM_GUN)) {
-                    shooting();
-                }
+                shooting();
                 movement();
             }
             animation();

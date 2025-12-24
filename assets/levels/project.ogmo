@@ -20,7 +20,7 @@
     {
       "definition": "grid",
       "name": "walls",
-      "gridSize": {"x": 10, "y": 10},
+      "gridSize": {"x": 20, "y": 20},
       "exportID": "50486407",
       "arrayMode": 1,
       "legend": {"0": "#00000000", "1": "#000000ff"}
@@ -28,7 +28,7 @@
     {
       "definition": "entity",
       "name": "entities",
-      "gridSize": {"x": 10, "y": 10},
+      "gridSize": {"x": 20, "y": 20},
       "exportID": "50484361",
       "requiredTags": [],
       "excludedTags": []
@@ -483,7 +483,7 @@
       "exportID": "54108473",
       "name": "optionalSolid",
       "limit": -1,
-      "size": {"x": 10, "y": 10},
+      "size": {"x": 20, "y": 20},
       "origin": {"x": 0, "y": 0},
       "originAnchored": true,
       "shape": {
