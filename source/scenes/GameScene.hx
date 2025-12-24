@@ -17,6 +17,7 @@ class GameScene extends Scene
     public static inline var SAVE_FILE_NAME = "saveme";
     public static inline var GAME_WIDTH = 320;
     public static inline var GAME_HEIGHT = 180;
+    public static inline var NUMBER_OF_CHUNK_TYPES = 2;
 
     public static var totalTime:Float = 0;
     public static var deathCount:Float = 0;
@@ -28,10 +29,11 @@ class GameScene extends Scene
 
     public var curtain(default, null):Curtain;
     public var isRetrying(default, null):Bool;
+    public var player(default, null):Player;
     private var level:Level;
-    private var player:Player;
     private var ui:UI;
     private var canRetry:Bool;
+    private var chunks:Array<Level>;
 
     public function saveGame(checkpoint:Checkpoint) {
         GameScene.bossCheckpoint = null;
@@ -60,23 +62,15 @@ class GameScene extends Scene
         canRetry = false;
         isRetrying = false;
 
-        level = add(new Level("level"));
-        var skies = new Array<Entity>();
-        for(entity in level.entities) {
-            if(entity.name == "player") {
+        var start = new Level("start");
+        add(start);
+        for(entity in start.entities) {
+            if(Type.getClass(entity) == Player) {
                 player = cast(entity, Player);
-                var currentCheckpoint = Data.read(
-                    "currentCheckpoint", new Vector2(player.x, player.y)
-                );
-                var checkpoint = GameScene.bossCheckpoint != null ? GameScene.bossCheckpoint : currentCheckpoint;
-                player.moveTo(checkpoint.x, checkpoint.y);
-            }
-            else if(entity.type == "boss" && isBossDefeated(entity.name)) {
-                trace('Boss with name "${entity.name}" already defeated. Skipping...');
-                continue;
             }
             add(entity);
         }
+        chunks = [start];
 
         if(sfx == null) {
             sfx = [
@@ -127,6 +121,9 @@ class GameScene extends Scene
     }
 
     override public function update() {
+        if(player.centerX + GAME_WIDTH > getTotalChunkWidth()) {
+            addChunk();
+        }
         if(canRetry && !isRetrying) {
             var retry = false;
             if(Input.pressed("jump")) {
@@ -163,5 +160,27 @@ class GameScene extends Scene
             Math.floor(player.bottom / GAME_HEIGHT) * GAME_HEIGHT,
             0, 0
         );
+    }
+
+    private function getTotalChunkWidth() {
+        var totalChunkWidth = 0;
+        for(chunk in chunks) {
+            totalChunkWidth += chunk.width;
+        }
+        return totalChunkWidth;
+    }
+
+    private function addChunk() {
+        var chunk = new Level('${Random.randInt(NUMBER_OF_CHUNK_TYPES)}');
+        chunk.x = getTotalChunkWidth();
+        chunks.push(chunk);
+        add(chunk);
+        for(entity in chunk.entities) {
+            entity.x += chunk.x;
+            if(Type.getClass(entity) == MovingPlatform) {
+                cast(entity, MovingPlatform).shiftPathPointsX(chunk.x);
+            }
+            add(entity);
+        }
     }
 }
