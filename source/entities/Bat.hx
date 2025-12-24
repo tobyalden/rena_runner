@@ -51,4 +51,8 @@ class Bat extends MiniEntity
         }
         super.update();
     }
+
+    public function die() {
+        HXP.scene.remove(this);
+    }
 }

@@ -185,6 +185,21 @@ class Player extends MiniEntity
         if(collide("walls", x, y) != null) {
             die();
         }
+        var enemy = collide("enemy", x, y);
+        if(enemy != null) {
+            if(bottom < enemy.bottom) {
+                if(Input.check("jump")) {
+                    velocity.y = -HIGH_JUMP_POWER;
+                }
+                else {
+                    velocity.y = -HIGH_JUMP_POWER / 1.5;
+                }
+                cast(enemy, Bat).die();
+            }
+            else {
+                die();
+            }
+        }
     }
 
     private function stopSounds() {

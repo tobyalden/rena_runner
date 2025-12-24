@@ -118,7 +118,7 @@ class Level extends Entity
             }
         }
         for(enemySpawn in enemySpawns) {
-            if(Random.random < 0.2) {
+            if(Random.random < 0.25) {
                 var enemy = new Bat(enemySpawn.tileX * TILE_SIZE, enemySpawn.tileY * TILE_SIZE);
             entities.push(enemy);
             }
