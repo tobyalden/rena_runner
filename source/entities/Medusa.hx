@@ -13,7 +13,7 @@ class Medusa extends Enemy
 {
     public static inline var HORIZONTAL_SPEED = 75;
     public static inline var SINE_WAVE_SPEED = 3;
-    public static inline var SINE_WAVE_SIZE = 35;
+    public static inline var SINE_WAVE_SIZE = 35 * 2;
 
     private var sprite:Image;
     private var age:Float;
@@ -23,7 +23,6 @@ class Medusa extends Enemy
         super(x, y);
         this.age = age;
         startY = y;
-        type = "hazard";
         sprite = new Image("graphics/medusa.png");
         graphic = sprite;
         mask = new Hitbox(30, 30);
