@@ -12,23 +12,18 @@ import haxepunk.tweens.misc.*;
 import haxepunk.utils.*;
 import scenes.*;
 
-class Bat extends MiniEntity
+class Bat extends Enemy
 {
     public static inline var ACTIVATION_DISTANCE = 250;
     public static inline var HORIZONTAL_SPEED = 100;
     public static inline var MAX_VERTICAL_SPEED = 175;
     public static inline var RISE_ACCEL = 200;
 
-    private var isAwake:Bool;
-    private var velocity:Vector2;
 
     public function new(startX:Float, startY:Float) {
         super(startX, startY);
-        type = "enemy";
         mask = new Hitbox(30, 30);
         graphic = new Image("graphics/bat.png");
-        isAwake = false;
-        velocity = new Vector2();
     }
 
     override public function update() {
@@ -50,10 +45,5 @@ class Bat extends MiniEntity
             );
         }
         super.update();
-    }
-
-    public function die() {
-        explode(4, false);
-        HXP.scene.remove(this);
     }
 }

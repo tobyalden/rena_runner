@@ -187,7 +187,7 @@ class Player extends MiniEntity
         }
         var enemy = collide("enemy", x, y);
         if(enemy != null) {
-            if(bottom < enemy.bottom) {
+            if(bottom < enemy.centerY) {
                 if(isOnGround()) {
                     moveBy(0, -1, ["walls"]);
                 }
@@ -197,7 +197,7 @@ class Player extends MiniEntity
                 else {
                     velocity.y = -HIGH_JUMP_POWER / 1.5;
                 }
-                //cast(enemy, Bat).die();
+                cast(enemy, Enemy).die();
             }
             else {
                 die();

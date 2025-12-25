@@ -12,25 +12,21 @@ import haxepunk.tweens.misc.*;
 import haxepunk.utils.*;
 import scenes.*;
 
-class Guy extends MiniEntity
+class Guy extends Enemy
 {
     public static inline var ACTIVATION_DISTANCE = GameScene.GAME_WIDTH;
     public static inline var HORIZONTAL_SPEED = 100;
     public static inline var CLIMB_SPEED = 75;
     public static inline var LEDGE_HOP_POWER = 150;
+    public static inline var JUMP_POWER = 250;
 
-    private var isAwake:Bool;
     private var isClimbing:Bool;
-    private var velocity:Vector2;
 
     public function new(startX:Float, startY:Float) {
         super(startX, startY);
-        type = "enemy";
         mask = new Hitbox(30, 40);
         graphic = new Image("graphics/guy.png");
-        isAwake = false;
         isClimbing = false;
-        velocity = new Vector2();
     }
 
     override public function update() {
@@ -48,6 +44,9 @@ class Guy extends MiniEntity
                 velocity.x = -HORIZONTAL_SPEED;
                 if(isOnGround()) {
                     velocity.y = 0;
+                    if(HXP.scene.collidePoint("walls", left, bottom) == null) {
+                        velocity.y = -JUMP_POWER;
+                    }
                 }
                 else {
                     velocity.y += Player.GRAVITY * HXP.elapsed;
@@ -67,10 +66,4 @@ class Guy extends MiniEntity
         isClimbing = true;
         return true;
     }
-
-    public function die() {
-        explode(4, false);
-        HXP.scene.remove(this);
-    }
 }
-
