@@ -6,6 +6,7 @@ import haxepunk.graphics.tile.*;
 import haxepunk.masks.*;
 import haxepunk.math.*;
 import openfl.Assets;
+import scenes.*;
 
 typedef Cell = {
     var tileX:Int;
@@ -108,6 +109,24 @@ class Level extends Entity
     }
 
     private function addEnemies() {
+        // Spawn medusas
+        var border = 5;
+        var medusaSpawns:Array<Cell> = [];
+        for(tileX in 0...walls.columns) {
+            for(tileY in border...(walls.rows - border)) {
+                medusaSpawns.push({tileX: tileX, tileY: tileY});
+            }
+        }
+        for(enemySpawn in medusaSpawns) {
+            if(Random.random < 0.01) {
+                var age = Random.random * Math.PI * 2;
+                var enemy = new Medusa(enemySpawn.tileX * TILE_SIZE, enemySpawn.tileY * TILE_SIZE, age);
+                entities.push(enemy);
+            }
+        }
+
+        return;
+
         // Spawn bats
         var batSpawns:Array<Cell> = [];
         for(tileX in 0...walls.columns) {
@@ -123,7 +142,7 @@ class Level extends Entity
         for(enemySpawn in batSpawns) {
             if(Random.random < 0.25) {
                 var enemy = new Bat(enemySpawn.tileX * TILE_SIZE, enemySpawn.tileY * TILE_SIZE);
-            entities.push(enemy);
+                entities.push(enemy);
             }
         }
 

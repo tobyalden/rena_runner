@@ -19,6 +19,13 @@ class Enemy extends MiniEntity
         velocity = new Vector2();
     }
 
+    override public function update() {
+        if(right < HXP.scene.camera.x) {
+            HXP.scene.remove(this);
+        }
+        super.update();
+    }
+
     public function die() {
         explode(4, false);
         HXP.scene.remove(this);
