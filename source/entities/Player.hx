@@ -197,7 +197,7 @@ class Player extends MiniEntity
                 else {
                     velocity.y = -HIGH_JUMP_POWER / 1.5;
                 }
-                cast(enemy, Bat).die();
+                //cast(enemy, Bat).die();
             }
             else {
                 die();

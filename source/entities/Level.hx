@@ -24,7 +24,9 @@ class Level extends Entity
         super(0, 0);
         type = "walls";
         loadLevel(levelName);
-        addEnemies();
+        if(levelName != "start") {
+            addEnemies();
+        }
         updateGraphic();
         mask = walls;
     }
@@ -106,21 +108,43 @@ class Level extends Entity
     }
 
     private function addEnemies() {
-        var enemySpawns:Array<Cell> = [];
+        // Spawn bats
+        var batSpawns:Array<Cell> = [];
         for(tileX in 0...walls.columns) {
             for(tileY in 0...walls.rows) {
                 if(
                     !walls.getTile(tileX, tileY)
                     && walls.getTile(tileX, tileY - 1)
                 ) {
-                    enemySpawns.push({tileX: tileX, tileY: tileY});
+                    batSpawns.push({tileX: tileX, tileY: tileY});
                 }
             }
         }
-        for(enemySpawn in enemySpawns) {
+        for(enemySpawn in batSpawns) {
             if(Random.random < 0.25) {
                 var enemy = new Bat(enemySpawn.tileX * TILE_SIZE, enemySpawn.tileY * TILE_SIZE);
             entities.push(enemy);
+            }
+        }
+
+        // Spawn guys
+        var guySpawns:Array<Cell> = [];
+        for(tileX in 0...walls.columns) {
+            for(tileY in 0...walls.rows) {
+                if(
+                    !walls.getTile(tileX, tileY)
+                    && !walls.getTile(tileX, tileY - 1)
+                    && walls.getTile(tileX, tileY + 1)
+                ) {
+                    guySpawns.push({tileX: tileX, tileY: tileY});
+                }
+            }
+        }
+        for(enemySpawn in guySpawns) {
+            if(Random.random < 0.1) {
+                var enemy = new Guy(enemySpawn.tileX * TILE_SIZE, (enemySpawn.tileY + 1) * TILE_SIZE);
+                enemy.y -= enemy.height;
+                entities.push(enemy);
             }
         }
     }
