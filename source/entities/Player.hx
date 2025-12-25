@@ -188,6 +188,9 @@ class Player extends MiniEntity
         var enemy = collide("enemy", x, y);
         if(enemy != null) {
             if(bottom < enemy.bottom) {
+                if(isOnGround()) {
+                    moveBy(0, -1, ["walls"]);
+                }
                 if(Input.check("jump")) {
                     velocity.y = -HIGH_JUMP_POWER;
                 }

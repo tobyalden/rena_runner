@@ -63,8 +63,7 @@ class MiniEntity extends Entity
         );
     }
 
-    private function explode() {
-        var numExplosions = 50;
+    private function explode(numExplosions:Int = 50, shake:Bool = true) {
         var directions = new Array<Vector2>();
         for(i in 0...numExplosions) {
             var angle = (2 / numExplosions) * i;
@@ -87,9 +86,11 @@ class MiniEntity extends Entity
             count++;
         }
 
+        if(shake) {
 #if desktop
-        Sys.sleep(0.02);
+            Sys.sleep(0.02);
 #end
-        scene.camera.shake(1, 4);
+            scene.camera.shake(1, 4);
+        }
     }
 }

@@ -25,7 +25,7 @@ class Bat extends MiniEntity
     public function new(startX:Float, startY:Float) {
         super(startX, startY);
         type = "enemy";
-        mask = new Hitbox(20, 20);
+        mask = new Hitbox(30, 30);
         graphic = new Image("graphics/bat.png");
         isAwake = false;
         velocity = new Vector2();
@@ -53,6 +53,7 @@ class Bat extends MiniEntity
     }
 
     public function die() {
+        explode(4, false);
         HXP.scene.remove(this);
     }
 }
