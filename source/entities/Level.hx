@@ -134,7 +134,7 @@ class Level extends Entity
         }
 
         // Create guy spawns
-        var guySpawns:Array<Cell> = [];
+        var groundSpawns:Array<Cell> = [];
         for(tileX in 0...walls.columns) {
             for(tileY in 0...walls.rows) {
                 if(
@@ -143,22 +143,24 @@ class Level extends Entity
                     && !walls.getTile(tileX + 1, tileY)
                     && walls.getTile(tileX, tileY + 1)
                 ) {
-                    guySpawns.push({tileX: tileX, tileY: tileY});
+                    groundSpawns.push({tileX: tileX, tileY: tileY});
                 }
             }
         }
 
-        for(spawns in [medusaSpawns, batSpawns, guySpawns]) {
+        for(spawns in [medusaSpawns, batSpawns, groundSpawns]) {
             HXP.shuffle(spawns);
         }
 
         for(i in 0...3) {
-            var enemyTypes = ["medusa", "bat", "guy"];
+            //var enemyTypes = ["medusa", "bat", "guy", "cannon"];
+            var enemyTypes = ["cannon"];
             for(enemyType in enemyTypes) {
                 var enemyTypeToSpawn = [
                     "medusa" => medusaSpawns,
                     "bat" => batSpawns,
-                    "guy" => guySpawns,
+                    "guy" => groundSpawns,
+                    "cannon" => groundSpawns,
                 ];
                 if(enemyTypeToSpawn[enemyType].length == 0) {
                     enemyTypes.remove(enemyType);
@@ -181,8 +183,18 @@ class Level extends Entity
                 entities.push(enemy);
             }
             else if(enemyType == "guy") {
-                var enemySpawn = guySpawns.pop();
+                var enemySpawn = groundSpawns.pop();
                 var enemy = new Guy(enemySpawn.tileX * TILE_SIZE - 10, (enemySpawn.tileY + 1) * TILE_SIZE);
+                enemy.y -= enemy.height;
+                entities.push(enemy);
+            }
+            else if(enemyType == "cannon") {
+                var enemySpawn = groundSpawns.pop();
+                var enemy = new Cannon(
+                    enemySpawn.tileX * TILE_SIZE - 10,
+                    (enemySpawn.tileY + 1) * TILE_SIZE,
+                    true
+                );
                 enemy.y -= enemy.height;
                 entities.push(enemy);
             }
