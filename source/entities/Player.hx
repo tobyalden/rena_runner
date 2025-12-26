@@ -127,13 +127,16 @@ class Player extends MiniEntity
         if(x + width > HXP.scene.camera.x + GameScene.GAME_WIDTH) {
             moveTo(HXP.scene.camera.x + GameScene.GAME_WIDTH - width, y);
         }
+        if(y > GameScene.GAME_HEIGHT) {
+            die();
+        }
         super.update();
     }
 
     private function shooting() {
-        //if(HXP.scene.typeCount("playerbullet") >= MAX_ONSCREEN_BULLETS) {
-            //return;
-        //}
+        if(HXP.scene.typeCount("playerbullet") >= MAX_ONSCREEN_BULLETS) {
+            return;
+        }
         //if(Input.pressed("action") && !shotCooldown.active) {
         if(Input.pressed("action")) {
             var bullet = new Bullet(
@@ -211,6 +214,9 @@ class Player extends MiniEntity
     }
 
     public function die() {
+        if(isDead) {
+            return;
+        }
         visible = false;
         collidable = false;
         isDead = true;

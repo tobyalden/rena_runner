@@ -39,4 +39,8 @@ class Cannonball extends Enemy
     private function onCollision() {
         scene.remove(this);
     }
+
+    override public function die() {
+        return;
+    }
 }

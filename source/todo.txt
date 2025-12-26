@@ -1,13 +1,7 @@
-mvp:
-
-+ saving
-+ tutorial
-+ main menu
-+ klaxon
-+ tutorialize shooting
-+ ending
-+ music
-+ sfx
-+ shrink hitbox on crouch
-+ ambience
-- graphics
+- pleasant valley
+- cave of transformation
+- cannon valley
+- windy hill
+- dungeon
+- palace
+- mystical realm

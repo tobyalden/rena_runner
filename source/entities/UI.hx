@@ -70,7 +70,7 @@ class UI extends MiniEntity {
             retryPrompt.text = (
                 GameScene.bossCheckpoint != null
                 ? "Z: Try again\nX: Return to checkpoint"
-                : "Z: Return to checkpoint"
+                : "PRESS Z TO RESTART"
             );
             retryPrompt.centerOrigin();
         }

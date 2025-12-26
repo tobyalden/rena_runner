@@ -152,9 +152,10 @@ class Level extends Entity
             HXP.shuffle(spawns);
         }
 
-        for(i in 0...3) {
-            //var enemyTypes = ["medusa", "bat", "guy", "cannon"];
-            var enemyTypes = ["cannon"];
+        var numEnemies = 2;
+        for(i in 0...numEnemies) {
+            var enemyTypes = ["medusa", "bat", "guy", "cannon"];
+            //var enemyTypes = ["cannon"];
             for(enemyType in enemyTypes) {
                 var enemyTypeToSpawn = [
                     "medusa" => medusaSpawns,

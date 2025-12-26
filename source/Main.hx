@@ -38,6 +38,17 @@ class Main extends Engine
             defineGamepadInputs(newGamepad);
         });
 
+#if desktop
+        var scale = 2;
+        var scaledWidth = GameScene.GAME_WIDTH * scale;
+        var scaledHeight = GameScene.GAME_HEIGHT * scale;
+        Lib.application.window.resize(scaledWidth, scaledHeight);
+        Lib.application.window.move(
+            Std.int(openfl.system.Capabilities.screenResolutionX / 2 - scaledWidth / 2),
+            Std.int(openfl.system.Capabilities.screenResolutionY / 2 - scaledHeight / 2)
+        );
+#end
+
         HXP.volume = 0;
         HXP.scene = new GameScene();
     }
