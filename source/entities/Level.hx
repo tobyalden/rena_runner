@@ -109,7 +109,7 @@ class Level extends Entity
     }
 
     private function addEnemies() {
-        // Spawn medusas
+        // Create medusa spawns
         var border = 5;
         var medusaSpawns:Array<Cell> = [];
         for(tileX in 0...walls.columns) {
@@ -117,51 +117,72 @@ class Level extends Entity
                 medusaSpawns.push({tileX: tileX, tileY: tileY});
             }
         }
-        for(enemySpawn in medusaSpawns) {
-            if(Random.random < 0.01) {
-                var age = Random.random * Math.PI * 2;
-                var enemy = new Medusa(enemySpawn.tileX * TILE_SIZE, enemySpawn.tileY * TILE_SIZE, age);
-                entities.push(enemy);
-            }
-        }
 
-        return;
-
-        // Spawn bats
+        // Create bat spawns
         var batSpawns:Array<Cell> = [];
         for(tileX in 0...walls.columns) {
             for(tileY in 0...walls.rows) {
                 if(
                     !walls.getTile(tileX, tileY)
                     && walls.getTile(tileX, tileY - 1)
+                    && walls.getTile(tileX - 1, tileY - 1)
+                    && walls.getTile(tileX + 1, tileY - 1)
                 ) {
                     batSpawns.push({tileX: tileX, tileY: tileY});
                 }
             }
         }
-        for(enemySpawn in batSpawns) {
-            if(Random.random < 0.25) {
-                var enemy = new Bat(enemySpawn.tileX * TILE_SIZE, enemySpawn.tileY * TILE_SIZE);
-                entities.push(enemy);
-            }
-        }
 
-        // Spawn guys
+        // Create guy spawns
         var guySpawns:Array<Cell> = [];
         for(tileX in 0...walls.columns) {
             for(tileY in 0...walls.rows) {
                 if(
                     !walls.getTile(tileX, tileY)
-                    && !walls.getTile(tileX, tileY - 1)
+                    && !walls.getTile(tileX - 1, tileY)
+                    && !walls.getTile(tileX + 1, tileY)
                     && walls.getTile(tileX, tileY + 1)
                 ) {
                     guySpawns.push({tileX: tileX, tileY: tileY});
                 }
             }
         }
-        for(enemySpawn in guySpawns) {
-            if(Random.random < 0.1) {
-                var enemy = new Guy(enemySpawn.tileX * TILE_SIZE, (enemySpawn.tileY + 1) * TILE_SIZE);
+
+        for(spawns in [medusaSpawns, batSpawns, guySpawns]) {
+            HXP.shuffle(spawns);
+        }
+
+        for(i in 0...3) {
+            var enemyTypes = ["medusa", "bat", "guy"];
+            for(enemyType in enemyTypes) {
+                var enemyTypeToSpawn = [
+                    "medusa" => medusaSpawns,
+                    "bat" => batSpawns,
+                    "guy" => guySpawns,
+                ];
+                if(enemyTypeToSpawn[enemyType].length == 0) {
+                    enemyTypes.remove(enemyType);
+                }
+            }
+            var enemyType = enemyTypes[Random.randInt(enemyTypes.length)];
+            if(enemyType == "medusa") {
+                var enemySpawn = medusaSpawns.pop();
+                var age = Random.random * Math.PI * 2;
+                var enemy = new Medusa(
+                    enemySpawn.tileX * TILE_SIZE,
+                    enemySpawn.tileY * TILE_SIZE,
+                    age
+                );
+                entities.push(enemy);
+            }
+            else if(enemyType == "bat") {
+                var enemySpawn = batSpawns.pop();
+                var enemy = new Bat(enemySpawn.tileX * TILE_SIZE - 10, enemySpawn.tileY * TILE_SIZE);
+                entities.push(enemy);
+            }
+            else if(enemyType == "guy") {
+                var enemySpawn = guySpawns.pop();
+                var enemy = new Guy(enemySpawn.tileX * TILE_SIZE - 10, (enemySpawn.tileY + 1) * TILE_SIZE);
                 enemy.y -= enemy.height;
                 entities.push(enemy);
             }

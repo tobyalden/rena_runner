@@ -23,6 +23,11 @@ class Enemy extends MiniEntity
         if(right < HXP.scene.camera.x) {
             HXP.scene.remove(this);
         }
+        var bullet = collide("playerbullet", x, y);
+        if(bullet != null) {
+            die();
+            HXP.scene.remove(bullet);
+        }
         super.update();
     }
 

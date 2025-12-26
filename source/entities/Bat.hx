@@ -14,9 +14,10 @@ import scenes.*;
 
 class Bat extends Enemy
 {
-    public static inline var ACTIVATION_DISTANCE = 250;
+    public static inline var ACTIVATION_DISTANCE = 300;
     public static inline var HORIZONTAL_SPEED = 100;
-    public static inline var MAX_VERTICAL_SPEED = 175;
+    //public static inline var MAX_VERTICAL_SPEED = 175;
+    public static inline var MAX_VERTICAL_SPEED = 225;
     public static inline var RISE_ACCEL = 200;
 
 
@@ -30,7 +31,7 @@ class Bat extends Enemy
         if(!isAwake) {
             if(
                 centerX - getPlayer().centerX < ACTIVATION_DISTANCE
-                && centerX < HXP.scene.camera.x + GameScene.GAME_WIDTH - 50
+                && centerX < HXP.scene.camera.x + GameScene.GAME_WIDTH - 25
             ) {
                 isAwake = true;
                 velocity.x = -HORIZONTAL_SPEED;

@@ -17,7 +17,7 @@ class GameScene extends Scene
     public static inline var SAVE_FILE_NAME = "runner";
     public static inline var GAME_WIDTH = 640;
     public static inline var GAME_HEIGHT = 360;
-    public static inline var NUMBER_OF_CHUNK_TYPES = 2;
+    public static inline var NUMBER_OF_CHUNK_TYPES = 5;
 
     public static inline var SCROLL_SPEED = Player.AUTORUN_SPEED;
 
