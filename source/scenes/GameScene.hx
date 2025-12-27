@@ -37,6 +37,8 @@ class GameScene extends Scene
     private var canRetry:Bool;
     private var chunks:Array<Level>;
 
+    private var loadedHammerBro:Bool;
+
     public function saveGame(checkpoint:Checkpoint) {
         GameScene.bossCheckpoint = null;
         Data.write("hasSaveData", true);
@@ -176,16 +178,29 @@ class GameScene extends Scene
     }
 
     private function addChunk() {
-        var chunk = new Level('${Random.randInt(NUMBER_OF_CHUNK_TYPES)}');
+        //var chunk = new Level('${Random.randInt(NUMBER_OF_CHUNK_TYPES)}');
+        var chunk = new Level('flat');
         chunk.x = getTotalChunkWidth();
         chunks.push(chunk);
         add(chunk);
+        var tempHam = false;
         for(entity in chunk.entities) {
+            if(
+                Type.getClass(entity) == HammerBro
+            ) {
+                if(loadedHammerBro) {
+                    return;
+                }
+                else {
+                    tempHam = true;
+                }
+            }
             entity.x += chunk.x;
             if(Type.getClass(entity) == MovingPlatform) {
                 cast(entity, MovingPlatform).shiftPathPointsX(chunk.x);
             }
             add(entity);
         }
+        loadedHammerBro = tempHam;
     }
 }
