@@ -154,14 +154,15 @@ class Level extends Entity
 
         var numEnemies = 2;
         for(i in 0...numEnemies) {
-            var enemyTypes = ["medusa", "bat", "guy", "cannon"];
-            var enemyTypes = ["hopper"];
+            //var enemyTypes = ["medusa", "bat", "guy", "cannon", "hopper"];
+            var enemyTypes = ["coward"];
             //var enemyTypes = ["hammerbro"];
             for(enemyType in enemyTypes) {
                 var enemyTypeToSpawn = [
                     "medusa" => medusaSpawns,
                     "bat" => batSpawns,
                     "guy" => groundSpawns,
+                    "coward" => groundSpawns,
                     "cannon" => groundSpawns,
                     "hammerbro" => groundSpawns,
                     "hopper" => groundSpawns,
@@ -189,6 +190,12 @@ class Level extends Entity
             else if(enemyType == "guy") {
                 var enemySpawn = groundSpawns.pop();
                 var enemy = new Guy(enemySpawn.tileX * TILE_SIZE - 10, (enemySpawn.tileY + 1) * TILE_SIZE);
+                enemy.y -= enemy.height;
+                entities.push(enemy);
+            }
+            else if(enemyType == "coward") {
+                var enemySpawn = groundSpawns.pop();
+                var enemy = new Coward(enemySpawn.tileX * TILE_SIZE - 10, (enemySpawn.tileY + 1) * TILE_SIZE);
                 enemy.y -= enemy.height;
                 entities.push(enemy);
             }

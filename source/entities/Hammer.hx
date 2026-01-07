@@ -11,6 +11,7 @@ import scenes.*;
 
 class Hammer extends MiniEntity
 {
+    // TODO: Use enemy class, but add "jumpable" and "shootable" params
     public static inline var SPEED = 300;
 
     private var velocity:Vector2;
