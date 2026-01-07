@@ -17,7 +17,10 @@ class HammerBro extends Enemy
     public static inline var JUMP_POWER = 350;
     public static inline var JUMP_INTERVAL = 2;
     public static inline var SHOOT_INTERVAL = 1.5;
+    public static inline var MAX_RUN_SPEED = 100;
+    public static inline var RUN_ACCEL = 200;
 
+    private var moveLeft:Bool;
     private var jumpTimer:Alarm;
     private var shootTimer:Alarm;
 
@@ -25,6 +28,7 @@ class HammerBro extends Enemy
         super(startX, startY);
         mask = new Hitbox(30, 40);
         graphic = new Image("graphics/hammerbro.png");
+        moveLeft = true;
         jumpTimer = new Alarm(JUMP_INTERVAL, TweenType.Looping);
         jumpTimer.onComplete.bind(function() {
             jump();
@@ -46,13 +50,24 @@ class HammerBro extends Enemy
             }
         }
         if(isAwake) {
+            if(centerX < HXP.scene.camera.x + 150) {
+                moveLeft = false;
+            }
+            if(centerX > HXP.scene.camera.x + GameScene.GAME_WIDTH - 100) {
+                moveLeft = true;
+            }
+            var maxLeftSpeed = -MAX_RUN_SPEED + Player.AUTORUN_SPEED;
+            var maxRightSpeed = MAX_RUN_SPEED + Player.AUTORUN_SPEED;
+            if(moveLeft) {
+                velocity.x -= RUN_ACCEL * HXP.elapsed;
+            }
+            else {
+                velocity.x += RUN_ACCEL * HXP.elapsed;
+            }
+            velocity.x = MathUtil.clamp(
+                velocity.x, maxLeftSpeed, maxRightSpeed
+            );
             if(isOnGround()) {
-                if(centerX < HXP.scene.camera.x + GameScene.GAME_WIDTH / 2.5) {
-                    velocity.x = 100 + Player.AUTORUN_SPEED;
-                }
-                if(centerX > HXP.scene.camera.x + GameScene.GAME_WIDTH - 60) {
-                    velocity.x = -100 + Player.AUTORUN_SPEED;
-                }
                 velocity.y = 0;
             }
             else {

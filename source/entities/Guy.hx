@@ -66,4 +66,11 @@ class Guy extends Enemy
         isClimbing = true;
         return true;
     }
+
+    override public function moveCollideY(_:Entity) {
+        if(velocity.y < 0) {
+            velocity.y = 0;
+        }
+        return true;
+    }
 }

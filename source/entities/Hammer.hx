@@ -9,12 +9,15 @@ import haxepunk.tweens.misc.*;
 import haxepunk.utils.*;
 import scenes.*;
 
-class Hammer extends Enemy
+class Hammer extends MiniEntity
 {
     public static inline var SPEED = 300;
 
+    private var velocity:Vector2;
+
     public function new(x:Float, y:Float, heading:Vector2) {
         super(x, y);
+        type = "hazard";
         graphic = new Image("graphics/hammer.png");
         velocity = heading;
         //velocity.normalize(SPEED + HXP.choose(-100, -50, 0));
@@ -26,6 +29,11 @@ class Hammer extends Enemy
         velocity.y += Player.GRAVITY / 2 * HXP.elapsed;
         velocity.y = Math.min(velocity.y, Player.MAX_FALL_SPEED);
         moveBy(velocity.x * HXP.elapsed, velocity.y * HXP.elapsed, ["walls"]);
+        var bullet = collide("playerbullet", x, y);
+        if(bullet != null) {
+            die();
+            HXP.scene.remove(bullet);
+        }
         super.update();
     }
 
@@ -43,8 +51,9 @@ class Hammer extends Enemy
         scene.remove(this);
     }
 
-    override public function die() {
-        return;
+    public function die() {
+        explode(4, false);
+        HXP.scene.remove(this);
     }
 }
 
